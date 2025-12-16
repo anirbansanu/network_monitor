@@ -206,7 +206,45 @@ class Repository:
         
         return results
     
+        return results
+
+    def get_all_flows(self, limit: int = 5000) -> List[FlowStat]:
+        """Get recent flows for export."""
+        conn = self._get_conn()
+        cursor = conn.cursor()
+        
+        cursor.execute("""
+            SELECT * FROM flow_sessions
+            ORDER BY last_seen DESC
+            LIMIT ?
+        """, (limit,))
+        
+        rows = cursor.fetchall()
+        conn.close()
+        
+        results = []
+        for row in rows:
+            flow = FlowStat(
+                protocol=row['protocol'],
+                local_ip=row['local_ip'],
+                local_port=row['local_port'],
+                remote_ip=row['remote_ip'],
+                remote_port=row['remote_port'],
+                bytes_up=row['bytes_up'],
+                bytes_down=row['bytes_down'],
+                packets_up=row['packets_up'],
+                packets_down=row['packets_down'],
+                process_name=row['process_name'],
+                process_pid=row['process_pid'],
+                start_time=datetime.fromisoformat(row['start_time']),
+                last_seen=datetime.fromisoformat(row['last_seen'])
+            )
+            results.append(flow)
+        
+        return results
+    
     # ============ Hosts ============
+
     
     def save_host(self, host: HostStat) -> None:
         """Save or update a host stat."""

@@ -6,12 +6,17 @@ Settings screen for application configuration.
 from typing import List, Callable
 from PySide6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QLabel, QSpinBox,
-    QCheckBox, QComboBox, QPushButton, QGroupBox, QListWidget, QListWidgetItem
+    QCheckBox, QComboBox, QPushButton, QGroupBox, QListWidget, QListWidgetItem,
+    QFileDialog, QMessageBox
 )
 from PySide6.QtCore import Qt
 
 from models.data_models import AppConfig
 from services.permission_service import PermissionService
+from services.export_service import ExportService
+# Import internal to avoid circular reference if needed, or pass repository
+from storage.repository import Repository
+
 
 
 class SettingsScreen(QWidget):
@@ -100,9 +105,20 @@ class SettingsScreen(QWidget):
         self.privacy_limit_checkbox = QCheckBox("Limit retention per privacy settings")
         
         privacy_layout.addWidget(self.privacy_hostname_checkbox)
-        privacy_layout.addWidget(self.privacy_limit_checkbox)
         privacy_group.setLayout(privacy_layout)
         layout.addWidget(privacy_group)
+
+        # ===== Data Management (Export) =====
+        data_group = QGroupBox("Data Management")
+        data_layout = QHBoxLayout()
+        
+        self.export_btn = QPushButton("Export Connection History (CSV)")
+        self.export_btn.clicked.connect(self._export_data)
+        
+        data_layout.addWidget(self.export_btn)
+        data_group.setLayout(data_layout)
+        layout.addWidget(data_group)
+
         
         # ===== Actions =====
         actions_layout = QHBoxLayout()
@@ -180,3 +196,34 @@ class SettingsScreen(QWidget):
         self.deep_capture_checkbox.setChecked(False)
         self.privacy_hostname_checkbox.setChecked(False)
         self.privacy_limit_checkbox.setChecked(True)
+
+    def _export_data(self):
+        """Export data to CSV."""
+        filepath, _ = QFileDialog.getSaveFileName(
+            self, "Export Data", "network_monitor_export.csv", "CSV Files (*.csv)"
+        )
+        
+        if not filepath:
+            return
+            
+        # We need access to repository to get data. 
+        # Ideally, we should request this via a service or callback.
+        # For MVP, let's create a temporary repository instance to fetch data.
+        try:
+            repo = Repository()
+            flows = repo.get_all_flows() # We need to make sure this method exists
+            
+            if not flows:
+                 QMessageBox.information(self, "Export", "No data to export.")
+                 return
+                 
+            success = ExportService.export_flows_to_csv(filepath, flows)
+            
+            if success:
+                QMessageBox.information(self, "Export", f"Data exported to {filepath}")
+            else:
+                QMessageBox.warning(self, "Export", "Failed to export data.")
+                
+        except Exception as e:
+            QMessageBox.critical(self, "Export Error", str(e))
+

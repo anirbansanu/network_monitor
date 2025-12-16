@@ -50,15 +50,9 @@ class MainWindow(QMainWindow):
         # Sidebar navigation
         self.sidebar = QListWidget()
         self.sidebar.setMaximumWidth(200)
-        self.sidebar.setStyleSheet("""
-            QListWidget {
-                background-color: #252525;
-                border-right: 1px solid #404040;
-            }
-            QListWidget::item:selected {
-                background-color: #0dbfb8;
-            }
-        """)
+        self.sidebar.setFocusPolicy(Qt.NoFocus)  # Remove focus border
+        self.sidebar.setMaximumWidth(220)
+        # Inline style removed to allow global dark.qss to work
         
         sidebar_items = ["Dashboard", "Interfaces", "Connections", "Settings"]
         for item_text in sidebar_items:

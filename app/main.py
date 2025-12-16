@@ -27,6 +27,7 @@ from storage.repository import Repository
 from services.config_service import ConfigService
 from services.permission_service import PermissionService
 from services.scheduler import Scheduler
+from services.alert_service import AlertService
 
 
 class MonitorWorker(QObject):
@@ -48,7 +49,10 @@ class MonitorWorker(QObject):
         
         self.sampler = NetworkSampler()
         self.aggregator = Aggregator()
+        self.sampler = NetworkSampler()
+        self.aggregator = Aggregator()
         self.capture_engine = get_capture_engine()
+        self.alert_service = AlertService()
         
         self.is_running = False
     
@@ -67,6 +71,10 @@ class MonitorWorker(QObject):
                 
                 # Emit signal
                 self.interfaces_updated.emit(stats)
+
+                # Check for alerts
+                self.alert_service.check_alerts(stats, self.config_service.get_config())
+
             
             # Sample active connections (psutil)
             connections = self.sampler.get_active_connections()
@@ -144,6 +152,10 @@ class NetworkMonitorApp(QApplication):
         self.worker.flows_updated.connect(self._on_flows_updated)
         self.worker.hosts_updated.connect(self._on_hosts_updated)
         self.worker.error_occurred.connect(self._on_error)
+        self.worker.alert_service.alert_triggered.connect(self._on_alert_triggered)
+
+        self.worker.hosts_updated.connect(self._on_hosts_updated)
+        self.worker.error_occurred.connect(self._on_error)
         
         # Scheduler
         self.scheduler = Scheduler()
@@ -216,6 +228,11 @@ class NetworkMonitorApp(QApplication):
         """Handle hosts update signal."""
         if hosts:
             self.main_window.dashboard_screen.update_top_hosts(hosts)
+
+    def _on_alert_triggered(self, message: str, alert_type: str):
+        """Handle alert signal."""
+        self.main_window.show_alert(message, alert_type)
+
     
     def _on_error(self, error_msg: str):
         """Handle error signal."""
@@ -235,11 +252,18 @@ class NetworkMonitorApp(QApplication):
     
     def closeEvent(self, event):
         """Handle application close."""
+        print("Shutting down...")
         self.scheduler.stop_sampling()
         self.scheduler.stop_cleanup()
         self.worker.stop_worker()
         self.worker_thread.quit()
-        self.worker_thread.wait()
+        
+        # Wait max 2 seconds for thread to finish
+        if not self.worker_thread.wait(2000):
+            print("Warning: Worker thread did not finish in time, forcing exit.")
+            self.worker_thread.terminate()
+            
+        event.accept()
         super().closeEvent(event)
 
 

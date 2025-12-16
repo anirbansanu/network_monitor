@@ -24,7 +24,8 @@ class AlertBanner(QWidget):
         
         self.setStyleSheet("""
             AlertBanner {
-                background-color: #d32f2f;
+                background-color: rgba(211, 47, 47, 0.9);
+                border: 1px solid #ff5252;
                 border-radius: 4px;
             }
         """)
@@ -35,7 +36,14 @@ class AlertBanner(QWidget):
     
     def show_warning(self, message: str, duration_ms: int = 5000) -> None:
         """Show a warning banner that auto-dismisses."""
-        self.message_label.setText(message)
+        self.message_label.setText(f"⚠ {message}")
+        self.setStyleSheet("""
+            AlertBanner {
+                background-color: rgba(60, 20, 20, 0.95);
+                border: 1px solid #ff5252;
+                border-radius: 4px;
+            }
+        """)
         self.show()
         
         # Auto-dismiss after duration
@@ -43,10 +51,11 @@ class AlertBanner(QWidget):
     
     def show_info(self, message: str, duration_ms: int = 5000) -> None:
         """Show an info banner."""
-        self.message_label.setText(message)
+        self.message_label.setText(f"ℹ {message}")
         self.setStyleSheet("""
             AlertBanner {
-                background-color: #1976d2;
+                background-color: rgba(10, 40, 40, 0.95);
+                border: 1px solid #64ffda;
                 border-radius: 4px;
             }
         """)
