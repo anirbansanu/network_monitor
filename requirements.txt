@@ -1,0 +1,29 @@
+# requirements.txt
+# Network Monitoring Application Dependencies
+
+# PySide6 for Qt GUI
+PySide6>=6.5.0
+
+# Plotting and visualization
+pyqtgraph>=0.13.0
+
+# System information
+psutil>=5.9.0
+
+# Database
+# (sqlite3 is included in Python)
+
+# Optional: Packet capture (install separately per platform)
+# Windows: Download Npcap from https://nmap.org/npcap/
+# Then: pip install pypcap or pip install scapy
+
+# Optional: Linux eBPF
+# Ubuntu/Debian: sudo apt install python3-bcc
+# Then: pip install bcc
+
+# Testing
+pytest>=7.0.0
+
+# Build and packaging
+PyInstaller>=5.10.0
+

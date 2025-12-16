@@ -1,0 +1,21 @@
+# requirements_build.txt
+# Additional dependencies for encrypted build
+
+# Code obfuscation
+pyarmor>=9.0.0    
+# ✅ Everything included
+
+# PyInstaller
+PyInstaller>=5.10.0
+
+# UPX for binary compression
+# Download from: https://upx.github.io/
+
+# Code protection
+# pyarmor-core>=3.8.0
+
+# Signing (Windows)
+# Requires Windows SDK
+
+# Optional: NSIS for installer
+# Download from: https://nsis.sourceforge.io/

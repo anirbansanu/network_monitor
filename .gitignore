@@ -1,0 +1,236 @@
+# .gitignore
+# Network Monitor Application - Git Ignore Rules
+
+## Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+## Virtual Environments
+.venv
+venv/
+env/
+ENV/
+
+## IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+.project
+.pydevproject
+.settings/
+*.sublime-project
+*.sublime-workspace
+
+## Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.hypothesis/
+
+## PyInstaller
+*.manifest
+*.spec
+build/
+dist/
+*.exe
+*.dll
+*.so
+
+## Build Outputs
+build/
+dist/
+armored/
+*.egg-info/
+
+## License & Encryption
+network_monitor.lic
+*.lic
+*.ico
+pyarmor_runtime/
+encrypted/
+armored/
+
+## Database & Storage
+*.db
+*.sqlite
+*.sqlite3
+storage/schema.sql.backup
+*.log
+
+## Configuration Files
+.env
+.env.local
+config/local_config.py
+settings/local_settings.py
+
+## Application Generated Files
+logs/
+*.log
+temp/
+tmp/
+cache/
+*.cache
+.cache/
+
+## OS Specific
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+.directory
+
+## IDE Configuration
+.vscode/settings.json
+.vscode/launch.json
+.idea/workspace.xml
+.idea/misc.xml
+.idea/modules.xml
+
+## Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+## macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+## Linux
+.nfs*
+.directory
+
+## Node (if using any Node tools)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+## Package Manager
+pip-log.txt
+pip-delete-this-directory.txt
+
+## Unit test / coverage reports
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.hypothesis/
+*.cover
+.hypothesis/
+
+## Project Specific - Network Monitor
+/dist/
+/build/
+/*.exe
+network_monitor.lic
+*.lic
+/armored/
+pyarmor_runtime/
+
+## User Data
+user_data/
+user_sessions/
+exported_data/
+reports/generated_reports/
+
+## Temporary Files
+*.tmp
+*.temp
+*.bak
+*.backup
+~*
+
+## Virtual Environment
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+## Development
+develop.py
+test_*.py
+debug_*.py
+local_settings.py
+
+## Generated Files
+*.mo
+*.pot
+*.pot~
+
+## Backup Files
+*.orig
+*.bak
+backup/
+*.backup
+
+## Compiled Files
+*.pyc
+*.pyo
+__pycache__/
+
+## Documentation
+docs/_build/
+site/
+
+## Archives
+*.zip
+*.tar.gz
+*.rar
+
+## Credentials & Secrets
+secrets.json
+credentials.json
+api_keys.txt
+.credentials
+
+## Build Artifacts
+NetworkMonitor.spec
+build/
+dist/
+armored/
+
+## User Files
+user_profiles/
+user_sessions/
+exported_reports/
+downloaded_data/
+
+# Keep these files in repo
+!.gitkeep
+!README.md
+!requirements.txt
+!requirements_build.txt
