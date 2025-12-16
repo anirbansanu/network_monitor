@@ -46,6 +46,14 @@ class InterfacesScreen(QWidget):
         ])
         self.table.setAlternatingRowColors(True)
         self.table.setSortingEnabled(True)
+        self.table.horizontalHeader().setStretchLastSection(True)
+        self.table.horizontalHeader().setDefaultSectionSize(120)
+        
+        # Responsive Columns
+        from PySide6.QtWidgets import QHeaderView
+        header = self.table.horizontalHeader()
+        for i in range(header.count()):
+            header.setSectionResizeMode(i, QHeaderView.ResizeMode.Stretch)
         
         layout.addWidget(self.table)
     
